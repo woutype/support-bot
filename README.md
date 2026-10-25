@@ -1,8 +1,14 @@
 <div align="center">
 
 # 🎫 SupportDesk Bot
-### *Enterprise-Grade Asynchronous Telegram Support & Ticketing System*
 
+<p align="center">
+  <a href="https://github.com/woutype/support-bot">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=20&duration=2500&pause=1000&color=2CA5E0&center=true&vCenter=true&width=550&lines=Async+Telegram+Ticketing+Bot;aiogram+3+%2B+PostgreSQL+%2B+asyncpg;Engineered+by+woutype+%E2%9A%A1" alt="Typing SVG" />
+  </a>
+</p>
+
+[![Author](https://img.shields.io/badge/Author-woutype-8A2BE2?style=for-the-badge&logo=github&logoColor=white)](https://github.com/woutype)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![aiogram](https://img.shields.io/badge/aiogram-3.x-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://docs.aiogram.dev/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -163,10 +169,16 @@ INFO:aiogram.dispatcher:Run polling for bot @YourBotName id=...
 
 ---
 
+## 👨‍💻 Author
+
+**woutype** — [@woutype](https://github.com/woutype)
+
+---
+
 ## 📄 License
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <div align="center">
-  <sub>Built with ❤️ and engineered for reliability.</sub>
+  <sub>Developed with ❤️ and engineered for reliability by <a href="https://github.com/woutype"><b>woutype</b></a>.</sub>
 </div>
