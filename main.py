@@ -24,10 +24,10 @@ async def main():
         level=logging.INFO,
     )
 
-    logging.info("🚀 Бот успешно запущен!")
+    logging.info("🚀 Bot started successfully!")
 
     commands = [
-        BotCommand(command='start', description="Перезапустить бота / Главное меню")
+        BotCommand(command='start', description="Restart bot / Main menu")
     ]
     await bot.set_my_commands(commands)
 

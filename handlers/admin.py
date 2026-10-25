@@ -1,11 +1,10 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
-import asyncpg
-from database.db import close_spam_ticket, get_ticket
-from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
-from states import AdminState
+from aiogram.fsm.context import FSMContext
+import asyncpg
+
 from database.db import close_spam_ticket, get_ticket, update_ticket
+from states import AdminState
 
 admin_router = Router()
 
@@ -18,23 +17,23 @@ async def close_ticket_callback(callback: CallbackQuery, pool: asyncpg.Pool):
     ticket = await get_ticket(pool=pool, ticket_id=ticket_id)
 
     if not ticket:
-        await callback.answer("Тикет не найден.")
+        await callback.answer("⚠️ Ticket not found.")
         return
 
     await close_spam_ticket(pool=pool, ticket_id=ticket_id)
 
     await callback.message.edit_text(
-        text=f"{callback.message.text}\n\n❌ <b>Обращение закрыто без ответа.</b>",
+        text=f"{callback.message.text}\n\n❌ <b>Ticket #{ticket_id} closed without reply.</b>",
         parse_mode="HTML"
     )
 
     await callback.bot.send_message(
         chat_id=ticket['user_tg_id'],
-        text=f"ℹ️ Ваше обращение <b>#{ticket_id}</b> было отклонено специалистом поддержки.",
+        text=f"ℹ️ Your support ticket <b>#{ticket_id}</b> has been closed by support.",
         parse_mode="HTML"
     )
 
-    await callback.answer("Тикет закрыт!")
+    await callback.answer("Ticket closed!")
 
 
 @admin_router.callback_query(F.data.startswith("reply:"))
@@ -47,8 +46,8 @@ async def start_admin_reply(callback: CallbackQuery, state: FSMContext):
     await state.update_data(ticket_id=ticket_id)
 
     await callback.message.reply(
-        f"✍️ Введите ответ на обращение <b>#{ticket_id}</b>:\n"
-        f"<i>(Клиент получит ваше сообщение от имени бота).</i>",
+        f"✍️ <b>Enter your reply for ticket #{ticket_id}:</b>\n\n"
+        f"<i>(The client will receive this message directly from the bot).</i>",
         parse_mode="HTML"
     )
 
@@ -65,7 +64,7 @@ async def process_admin_reply(message: Message, state: FSMContext, pool: asyncpg
     ticket = await get_ticket(pool=pool, ticket_id=ticket_id)
 
     if not ticket:
-        await message.answer("Ошибка: обращение не найдено.")
+        await message.answer("⚠️ Error: Ticket not found.")
         return
 
     await update_ticket(
@@ -76,11 +75,11 @@ async def process_admin_reply(message: Message, state: FSMContext, pool: asyncpg
     )
 
     client_text = (
-        f"📩 <b>Получен ответ службы поддержки по обращению #{ticket_id}:</b>\n"
+        f"📩 <b>Support Response for Ticket #{ticket_id}:</b>\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"«{message.text}»\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"<i>Если у вас остались вопросы, вы можете создать новое обращение.</i>"
+        f"<i>If you have any further questions, feel free to submit a new ticket!</i>"
     )
 
     await message.bot.send_message(
@@ -89,5 +88,5 @@ async def process_admin_reply(message: Message, state: FSMContext, pool: asyncpg
         parse_mode="HTML",
     )
 
-    await message.answer(f"✅ Ответ успешно отправлен автору обращения #{ticket_id}!")
+    await message.answer(f"✅ <b>Reply successfully sent to client for ticket #{ticket_id}!</b>", parse_mode="HTML")
 
