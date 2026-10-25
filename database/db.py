@@ -1,5 +1,3 @@
-from tkinter.constants import INSERT
-
 import asyncpg
 from config import SQLConfig
 
@@ -64,9 +62,10 @@ async def create_ticket(pool: asyncpg.Pool, user_tg_id: int, issue_text: str) ->
 async def get_user_tickets(pool: asyncpg.Pool, user_tg_id: int) -> list[asyncpg.Record]:
 
      query = """
-        SELECT issue_text, status, created_at
+        SELECT id, issue_text, status, created_at
         FROM tickets
-        WHERE user_tg_id = $1;
+        WHERE user_tg_id = $1
+        ORDER BY id DESC;
      """
 
      return await pool.fetch(query, user_tg_id)
@@ -75,7 +74,7 @@ async def get_user_tickets(pool: asyncpg.Pool, user_tg_id: int) -> list[asyncpg.
 async def get_ticket(pool: asyncpg.Pool, ticket_id) -> asyncpg.Record | None:
 
      query = """
-        SELECT user_tg_id, issue_text, status, created_at
+        SELECT id, user_tg_id, issue_text, status, admin_reply, created_at
         FROM tickets
         WHERE id = $1;
      """
